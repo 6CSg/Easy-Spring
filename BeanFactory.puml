@@ -1,0 +1,113 @@
+@startuml
+interface AutoWireCapableBeanFactory {
+}
+abstract class AbstractAutoWireCapableBeanFactory {
+- InstantiationStrategy instantiationStrategy
+- InstantiationStrategy jdkInstantiationStrategy
+# Object createBean(String,BeanDefinition,Object[])
+# Object doCreateBean(String,BeanDefinition,Object[])
+# Object getEarlyBeanReference(String,BeanDefinition,Object)
+- boolean applyBeanPostProcessorsAfterInstantiation(String,Object)
+- void applyBeanPostProcessorsBeforeApplyingPropertyValues(String,Object,BeanDefinition)
+# Object resolveBeforeInstantiation(String,BeanDefinition)
+# Object applyBeanPostProcessorsBeforeInstantiation(Class<?>,String)
+- void registerDisposableBeanIfNecessary(Object,String,BeanDefinition)
+- Object initializeBean(String,Object,BeanDefinition)
+- Object applyBeanPostProcessorsBeforeInitialization(Object,String)
+- Object applyBeanPostProcessorsAfterInitialization(Object,String)
+- void invokeInitMethods(String,Object,BeanDefinition)
+# Object createBeanInstance(String,BeanDefinition,Object[])
+- void applyPropertyValues(String,Object,BeanDefinition)
++ InstantiationStrategy getInstantiationStrategy()
++ void setInstantiationStrategy(InstantiationStrategy)
++ InstantiationStrategy getJdkInstantiationStrategy()
++ void setJdkInstantiationStrategy(InstantiationStrategy)
+}
+interface ConfigurableBeanFactory {
+~ String SCOPE_SINGLETON
+~ String SCOPE_PROTOTYPE
+~ void addBeanPostProcessor(BeanPostProcessor)
+~ void destroySingletons()
+~ void addEmbeddedValueResolver(StringValueResolver)
+~ String resolveEmbeddedValue(String)
+~ void setConversionService(ConversionService)
+~ ConversionService getConversionService()
+}
+interface ListableBeanFactory {
+~ Map<String,T> getBeansOfType(Class<T>)
+~ String[] getBeanDefinitionNames()
+}
+abstract class AbstractBeanFactory {
+- List<BeanPostProcessor> beanPostProcessors
+- ClassLoader beanClassLoader
+- List<StringValueResolver> embeddedValueResolvers
+- ConversionService conversionService
++ Object getBean(String)
++ T getBean(String,Class<T>)
++ Object getBean(String,Object)
+# T doGetBean(String,Object[])
+- Object getObjectForBeanInstance(Object,String)
+# {abstract}Object createBean(String,BeanDefinition,Object[])
+# {abstract}BeanDefinition getBeanDefinition(String)
++ List<BeanPostProcessor> getBeanPostProcessors()
++ void addBeanPostProcessor(BeanPostProcessor)
++ void addEmbeddedValueResolver(StringValueResolver)
++ boolean containsBean(String)
++ String resolveEmbeddedValue(String)
+# {abstract}boolean containsBeanDefinition(String)
++ ConversionService getConversionService()
++ void setConversionService(ConversionService)
++ ClassLoader getBeanClassLoader()
+}
+interface SingletonBeanRegistry {
+~ Object getSingleton(String)
+~ void registerSingleton(String,Object)
+}
+interface BeanDefinitionRegistry {
+~ void registerBeanDefinition(String,BeanDefinition)
+~ boolean containsBeanDefinition(String)
+}
+class FactoryBeanRegistrySupport {
+- Map<String,Object> factoryBeanCache
++ Object getCachedObjectForFactoryBean(String)
++ Object getObjectFromFactoryBean(FactoryBean,String)
+- Object doGetObjectFromFactoryBean(FactoryBean,String)
+}
+class DefaultListableBeanFactory {
+~ Map<String,BeanDefinition> beanDefinitionMap
++ void registerBeanDefinition(String,BeanDefinition)
++ BeanDefinition getBeanDefinition(String)
++ void preInstantiateSingletons()
++ Map<String,T> getBeansOfType(Class<T>)
++ String[] getBeanDefinitionNames()
++ boolean containsBeanDefinition(String)
++ T getBean(Class<T>)
+}
+class DefaultSingletonBeanRegistry {
+# {static} Object NULL_OBJECT
+- Map<String,Object> singletonBeansMap
+# Map<String,Object> earlySingletonObjects
+- Map<String,ObjectFactory<?>> singletonFactories
+- Map<String,DisableBean> disableBeansMap
++ Object getSingleton(String)
++ void registerSingleton(String,Object)
+# void addSingleton(String,Object)
+# void registerDisposableBean(String,DisableBean)
+# void addSingletonFactory(String,ObjectFactory<?>)
++ void destroySingletons()
+}
+
+
+BeanFactory <|-- AutoWireCapableBeanFactory
+AbstractBeanFactory <|-- AbstractAutoWireCapableBeanFactory
+HierarchicalBeanFactory <|-- ConfigurableBeanFactory
+SingletonBeanRegistry <|-- ConfigurableBeanFactory
+BeanFactory <|-- ListableBeanFactory
+ConfigurableBeanFactory <|.. AbstractBeanFactory
+FactoryBeanRegistrySupport <|-- AbstractBeanFactory
+DefaultSingletonBeanRegistry <|-- FactoryBeanRegistrySupport
+BeanDefinitionRegistry <|.. DefaultListableBeanFactory
+ConfigurableListableBeanFactory <|.. DefaultListableBeanFactory
+AbstractAutoWireCapableBeanFactory <|-- DefaultListableBeanFactory
+SingletonBeanRegistry <|.. DefaultSingletonBeanRegistry
+@enduml

@@ -1,0 +1,70 @@
+@startuml
+interface com.csg.springframework.context.ConfigurableApplicationContext {
+~ void refresh()
+~ void registerShutdownHook()
+~ void close()
+}
+interface com.csg.springframework.context.ApplicationContext {
+}
+abstract class com.csg.springframework.context.support.AbstractRefreshableApplicationContext {
+- DefaultListableBeanFactory beanFactory
+# void refreshBeanFactory()
+- DefaultListableBeanFactory createBeanFactory()
+# {abstract}void loadBeanDefinitions(DefaultListableBeanFactory)
++ DefaultListableBeanFactory getBeanFactory()
+}
+class com.csg.springframework.context.support.FilePathXmlApplicationContext {
+- String[] configLocations
++ <<Create>> FilePathXmlApplicationContext()
++ <<Create>> FilePathXmlApplicationContext(String[])
++ <<Create>> FilePathXmlApplicationContext(String)
+# String[] getConfigLocations()
+}
+abstract class com.csg.springframework.context.support.AbstractXmlApplicationContext {
+# void loadBeanDefinitions(DefaultListableBeanFactory)
+# {abstract}String[] getConfigLocations()
+}
+abstract class com.csg.springframework.context.support.AbstractApplicationContext {
++ {static} String APPLICATION_EVENT_MULTICASTER_BEAN_NAME
+- ApplicationEventMulticaster applicationEventMulticaster
++ void refresh()
+- void initApplicationEventMulticaster()
+- void registerListeners()
+- void finishRefresh()
++ void publishEvent(ApplicationEvent)
+# {abstract}void refreshBeanFactory()
+# {abstract}ConfigurableListableBeanFactory getBeanFactory()
+- void invokeBeanFactoryProcessors(ConfigurableListableBeanFactory)
+- void registerBeanPostProcessors(ConfigurableListableBeanFactory)
+# void finishBeanFactoryInitialization(ConfigurableListableBeanFactory)
++ void registerShutdownHook()
++ void close()
++ boolean containsBean(String)
++ Map<String,T> getBeansOfType(Class<T>)
++ String[] getBeanDefinitionNames()
++ Object getBean(String)
++ Object getBean(String,Object)
++ T getBean(String,Class<T>)
++ T getBean(Class<T>)
+}
+class com.csg.springframework.context.support.ClassPathXmlApplicationContext {
+- String[] configLocations
++ <<Create>> ClassPathXmlApplicationContext()
++ <<Create>> ClassPathXmlApplicationContext(String)
++ <<Create>> ClassPathXmlApplicationContext(String[])
++ String[] getConfigLocations()
+}
+
+
+com.csg.springframework.context.ApplicationContext <|-- com.csg.springframework.context.ConfigurableApplicationContext
+com.csg.springframework.beans.factory.ListableBeanFactory <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.beans.factory.HierarchicalBeanFactory <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.core.io.ResourceLoader <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.context.ApplicationEventPublisher <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.context.support.AbstractApplicationContext <|-- com.csg.springframework.context.support.AbstractRefreshableApplicationContext
+com.csg.springframework.context.support.AbstractXmlApplicationContext <|-- com.csg.springframework.context.support.FilePathXmlApplicationContext
+com.csg.springframework.context.support.AbstractRefreshableApplicationContext <|-- com.csg.springframework.context.support.AbstractXmlApplicationContext
+com.csg.springframework.context.ConfigurableApplicationContext <|.. com.csg.springframework.context.support.AbstractApplicationContext
+com.csg.springframework.core.io.DefaultResourceLoader <|-- com.csg.springframework.context.support.AbstractApplicationContext
+com.csg.springframework.context.support.AbstractXmlApplicationContext <|-- com.csg.springframework.context.support.ClassPathXmlApplicationContext
+@enduml

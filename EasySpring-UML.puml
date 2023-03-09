@@ -1,0 +1,705 @@
+@startuml
+interface com.csg.springframework.aop.Advisor {
+~ Advice getAdvice()
+}
+interface com.csg.springframework.beans.factory.config.SingletonBeanRegistry {
+~ Object getSingleton(String)
+~ void registerSingleton(String,Object)
+}
+interface com.csg.springframework.beans.factory.surpport.InstantiationStrategy {
+~ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+interface com.csg.springframework.context.ApplicationContext {
+}
+interface com.csg.springframework.context.ApplicationListener {
+~ void onApplicationEvent(E)
+}
+class com.csg.springframework.aop.aspectj.AspectJExpressionPointcut {
+- {static} Set<PointcutPrimitive> SUPPORTED_PRIMITIVES
+- PointcutExpression pointcutExpression
++ <<Create>> AspectJExpressionPointcut(String)
++ boolean matches(Class<?>)
++ boolean matches(Method,Class<?>)
++ ClassFilter getClassFilter()
++ MethodMatcher getMethodMatcher()
+}
+interface com.csg.springframework.aop.ClassFilter {
+~ boolean matches(Class<?>)
+}
+interface com.csg.springframework.beans.factory.BeanClassLoaderAware {
+~ void setBeanClassLoader(ClassLoader)
+}
+interface com.csg.springframework.beans.factory.ConfigurableListableBeanFactory {
+~ BeanDefinition getBeanDefinition(String)
+~ void preInstantiateSingletons()
+}
+interface com.csg.springframework.beans.factory.ListableBeanFactory {
+~ Map<String,T> getBeansOfType(Class<T>)
+~ String[] getBeanDefinitionNames()
+}
+class com.csg.springframework.context.support.ApplicationContextAwareProcessor {
+- ApplicationContext applicationContext
++ <<Create>> ApplicationContextAwareProcessor(ApplicationContext)
++ Object postProcessBeforeInitialization(Object,String)
++ Object postProcessAfterInitialization(Object,String)
+}
+class com.csg.springframework.context.support.FilePathXmlApplicationContext {
+- String[] configLocations
++ <<Create>> FilePathXmlApplicationContext()
++ <<Create>> FilePathXmlApplicationContext(String[])
++ <<Create>> FilePathXmlApplicationContext(String)
+# String[] getConfigLocations()
+}
+class com.csg.springframework.context.support.ClassPathXmlApplicationContext {
+- String[] configLocations
++ <<Create>> ClassPathXmlApplicationContext()
++ <<Create>> ClassPathXmlApplicationContext(String)
++ <<Create>> ClassPathXmlApplicationContext(String[])
++ String[] getConfigLocations()
+}
+class com.csg.springframework.context.annotation.ClassPathBeanDefinitionScanner {
+- BeanDefinitionRegistry registry
++ <<Create>> ClassPathBeanDefinitionScanner(BeanDefinitionRegistry)
++ void doScan(String)
+- String determineBeanName(BeanDefinition)
+- String resolveBeanScope(BeanDefinition)
+}
+interface com.csg.springframework.core.io.Resource {
+~ InputStream getInputStream()
+}
+interface com.csg.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor {
+~ Object postProcessBeforeInstantiation(Class<?>,String)
+~ PropertyValues postProcessPropertyValues(PropertyValues,Object,String)
+~ boolean postProcessAfterInstantiation(Object,String)
+~ Object getEarlyBeanReference(Object,String)
+}
+interface com.csg.springframework.beans.factory.BeanFactoryAware {
+~ void setBeanFactory(BeanFactory)
+}
+class com.csg.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator {
+- DefaultListableBeanFactory beanFactory
+- Set<Object> earlyProxyReferences
++ Object postProcessBeforeInstantiation(Class<?>,String)
++ PropertyValues postProcessPropertyValues(PropertyValues,Object,String)
++ boolean postProcessAfterInstantiation(Object,String)
++ Object postProcessBeforeInitialization(Object,String)
++ Object postProcessAfterInitialization(Object,String)
++ void setBeanFactory(BeanFactory)
++ boolean isInfrastructureClass(Class<?>)
++ Object getEarlyBeanReference(Object,String)
+# Object wrapIfNecessary(Object,String)
+}
+class com.csg.springframework.core.io.FileSystemResource {
+- File file
+- String path
++ <<Create>> FileSystemResource(File)
++ <<Create>> FileSystemResource(String)
++ InputStream getInputStream()
++ String getPath()
+}
+class com.csg.springframework.context.event.SimpleApplicationEventMulticaster {
++ <<Create>> SimpleApplicationEventMulticaster(BeanFactory)
++ void multicastEvent(ApplicationEvent)
+}
+interface com.csg.springframework.core.convert.converter.GenericConverter {
+~ Set<ConvertiblePair> getConvertibleTypes()
+~ Object convert(Object,Class<?>,Class<?>)
+}
+class com.csg.springframework.core.convert.converter.GenericConverter.ConvertiblePair {
+- Class<?> sourceType
+- Class<?> targetType
++ <<Create>> ConvertiblePair(Class<?>,Class<?>)
++ Class<?> getSourceType()
++ Class<?> getTargetType()
++ boolean equals(Object)
++ int hashCode()
+}
+interface com.csg.springframework.aop.AfterReturningAdvice {
+~ void after(Method,Object[],Object)
+}
+class com.csg.springframework.context.support.ConversionServiceFactoryBean {
+- Set<?> converters
+- GenericConversionService conversionService
++ ConversionService getObject()
++ Class<?> getObjectType()
++ boolean isSingleton()
+- void registerConverters(Set<?>,ConverterRegistry)
++ void setConverters(Set<?>)
++ void afterPropertiesSet()
+}
+interface com.csg.springframework.beans.factory.config.BeanFactoryPostProcessor {
+~ void postProcessBeanFactory(ConfigurableListableBeanFactory)
+}
+class com.csg.springframework.beans.factory.surpport.FactoryBeanRegistrySupport {
+- Map<String,Object> factoryBeanCache
++ Object getCachedObjectForFactoryBean(String)
++ Object getObjectFromFactoryBean(FactoryBean,String)
+- Object doGetObjectFromFactoryBean(FactoryBean,String)
+}
+class com.csg.springframework.beans.PropertyValue {
+- String name
+- Object value
++ <<Create>> PropertyValue(String,Object)
++ String getName()
++ Object getValue()
+}
+class com.csg.springframework.beans.factory.config.BeanDefinition {
+~ String SCOPE_SINGLETON
+- boolean singleton
+~ String SCOPE_PROTOTYPE
+- boolean prototype
+- String scope
+- Class beanClass
+- PropertyValues propertyValues
+- String initMethodName
+- String destroyMethodName
++ <<Create>> BeanDefinition(Class,PropertyValues)
++ <<Create>> BeanDefinition(Class)
++ String getInitMethodName()
++ void setInitMethodName(String)
++ String getDestroyMethodName()
++ void setDestroyMethodName(String)
++ boolean isSingleton()
++ Class getBeanClass()
++ void setBeanClass(Class)
++ PropertyValues getPropertyValues()
++ void setPropertyValues(PropertyValues)
++ String getSCOPE_SINGLETON()
++ String getScope()
++ void setScope(String)
++ void setSCOPE_SINGLETON(String)
++ void setSingleton(boolean)
++ String getSCOPE_PROTOTYPE()
++ void setSCOPE_PROTOTYPE(String)
++ boolean isPrototype()
++ void setPrototype(boolean)
+}
+interface com.csg.springframework.beans.factory.Aware {
+}
+abstract class com.csg.springframework.context.support.AbstractRefreshableApplicationContext {
+- DefaultListableBeanFactory beanFactory
+# void refreshBeanFactory()
+- DefaultListableBeanFactory createBeanFactory()
+# {abstract}void loadBeanDefinitions(DefaultListableBeanFactory)
++ DefaultListableBeanFactory getBeanFactory()
+}
+class com.csg.springframework.aop.TargetSource {
+- Object target
++ <<Create>> TargetSource(Object)
++ Class<?>[] getTargetClass()
++ Object getTarget()
+}
+class com.csg.springframework.beans.factory.surpport.DefaultSingletonBeanRegistry {
+# {static} Object NULL_OBJECT
+- Map<String,Object> singletonBeansMap
+# Map<String,Object> earlySingletonObjects
+- Map<String,ObjectFactory<?>> singletonFactories
+- Map<String,DisableBean> disableBeansMap
++ Object getSingleton(String)
++ void registerSingleton(String,Object)
+# void addSingleton(String,Object)
+# void registerDisposableBean(String,DisableBean)
+# void addSingletonFactory(String,ObjectFactory<?>)
++ void destroySingletons()
+}
+class com.csg.springframework.beans.factory.config.BeanReference {
+- String beanName
++ <<Create>> BeanReference(String)
++ String getBeanName()
+}
+interface com.csg.springframework.beans.factory.ApplicationContextAware {
+~ void setApplicationContext(ApplicationContext)
+}
+interface com.csg.springframework.context.ApplicationEventPublisher {
+~ void publishEvent(ApplicationEvent)
+}
+interface com.csg.springframework.aop.framework.AopProxy {
+~ Object getProxy()
+}
+class com.csg.springframework.core.convert.support.StringToNumberConverterFactory {
++ Converter<String,T> getConverter(Class<T>)
+}
+class com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber {
+- Class<T> targetType
+- <<Create>> StringToNumber(Class<T>)
++ T convert(String)
+}
+class com.csg.springframework.aop.framework.adapter.MethodAfterAdviceInterceptor {
+- AfterReturningAdvice advice
++ <<Create>> MethodAfterAdviceInterceptor(AfterReturningAdvice)
++ <<Create>> MethodAfterAdviceInterceptor()
++ Object invoke(MethodInvocation)
+}
+class com.csg.springframework.aop.framework.Cglib2AopProxy {
+- AdvisedSupport advised
++ <<Create>> Cglib2AopProxy(AdvisedSupport)
++ Object getProxy()
+}
+class com.csg.springframework.aop.framework.Cglib2AopProxy.DynamicAdvisedInterceptor {
+- AdvisedSupport advised
++ <<Create>> DynamicAdvisedInterceptor(AdvisedSupport)
++ Object intercept(Object,Method,Object[],MethodProxy)
+}
+class com.csg.springframework.aop.framework.Cglib2AopProxy.CglibMethodInvocation {
+- MethodProxy methodProxy
++ <<Create>> CglibMethodInvocation(Object,Method,Object[],MethodProxy)
++ Object proceed()
+}
+class com.csg.springframework.aop.AdvisedSupport {
+- TargetSource targetSource
+- MethodInterceptor methodInterceptor
+- MethodMatcher methodMatcher
+- boolean proxyTargetClass
++ TargetSource getTargetSource()
++ void setTargetSource(TargetSource)
++ MethodInterceptor getMethodInterceptor()
++ void setMethodInterceptor(MethodInterceptor)
++ MethodMatcher getMethodMatcher()
++ void setMethodMatcher(MethodMatcher)
++ void setProxyTargetClass(boolean)
++ boolean isProxyTargetClass()
+}
+class com.csg.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor {
+- MethodBeforeAdvice advice
++ <<Create>> MethodBeforeAdviceInterceptor()
++ <<Create>> MethodBeforeAdviceInterceptor(MethodBeforeAdvice)
++ Object invoke(MethodInvocation)
+}
+interface com.csg.springframework.core.convert.converter.ConverterFactory {
+~ Converter<S,T> getConverter(Class<T>)
+}
+interface com.csg.springframework.aop.PointcutAdvisor {
+~ Pointcut getPointcut()
+}
+interface com.csg.springframework.context.event.ApplicationEventMulticaster {
+~ void addApplicationListener(ApplicationListener<?>)
+~ void removeApplicationListener(ApplicationListener<?>)
+~ void multicastEvent(ApplicationEvent)
+}
+interface com.csg.springframework.core.convert.converter.Converter {
+~ T convert(S)
+}
+interface com.csg.springframework.beans.factory.FactoryBean {
+~ T getObject()
+~ Class<?> getObjectType()
+~ boolean isSingleton()
+}
+interface com.csg.springframework.beans.factory.config.BeanPostProcessor {
+~ Object postProcessBeforeInitialization(Object,String)
+~ Object postProcessAfterInitialization(Object,String)
+}
+abstract class com.csg.springframework.context.event.AbstractApplicationEventMulticaster {
++ Set<ApplicationListener<ApplicationEvent>> applicationListeners
++ BeanFactory beanFactory
++ void addApplicationListener(ApplicationListener<?>)
++ void removeApplicationListener(ApplicationListener<?>)
++ void setBeanFactory(BeanFactory)
+# Collection<ApplicationListener> getApplicationListeners(ApplicationEvent)
+- boolean supportsEvent(ApplicationListener<ApplicationEvent>,ApplicationEvent)
+}
+interface com.csg.springframework.beans.factory.config.ConfigurableBeanFactory {
+~ String SCOPE_SINGLETON
+~ String SCOPE_PROTOTYPE
+~ void addBeanPostProcessor(BeanPostProcessor)
+~ void destroySingletons()
+~ void addEmbeddedValueResolver(StringValueResolver)
+~ String resolveEmbeddedValue(String)
+~ void setConversionService(ConversionService)
+~ ConversionService getConversionService()
+}
+class com.csg.springframework.context.event.ApplicationContextEvent {
++ <<Create>> ApplicationContextEvent(Object)
++ ApplicationContext getApplicationContext()
+}
+abstract class com.csg.springframework.context.ApplicationEvent {
++ <<Create>> ApplicationEvent(Object)
+}
+interface com.csg.springframework.aop.MethodMatcher {
+~ boolean matches(Method,Class<?>)
+}
+interface com.csg.springframework.core.convert.converter.ConverterRegistry {
+~ void addConverter(Converter<?,?>)
+~ void addConverter(GenericConverter)
+~ void addConverterFactory(ConverterFactory<?,?>)
+}
+interface com.csg.springframework.beans.factory.surpport.BeanDefinitionRegistry {
+~ void registerBeanDefinition(String,BeanDefinition)
+~ boolean containsBeanDefinition(String)
+}
+class com.csg.springframework.core.io.DefaultResourceLoader {
++ Resource getResource(String)
+}
+class com.csg.springframework.beans.PropertyValues {
+- List<PropertyValue> propertyValues
++ void addPropertyValue(PropertyValue)
++ PropertyValue[] getPropertyValues()
++ PropertyValue getPropertyValue(String)
+}
+class com.csg.springframework.beans.factory.surpport.DisposableBeanAdapter {
+- Object bean
+- Object beanName
+- String destroyMethodName
++ <<Create>> DisposableBeanAdapter(Object,Object,BeanDefinition)
++ void destroy()
+}
+interface com.csg.springframework.beans.factory.HierarchicalBeanFactory {
+}
+class com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer {
++ {static} String DEFAULT_PLACEHOLDER_PREFIX
++ {static} String DEFAULT_PLACEHOLDER_SUFFIX
+- String location
++ void postProcessBeanFactory(ConfigurableListableBeanFactory)
+- String resolvePlaceholder(Properties,String)
++ String getLocation()
++ void setLocation(String)
+}
+class com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer.PlaceholderResolvingStringValueResolver {
+- Properties properties
+- <<Create>> PlaceholderResolvingStringValueResolver(Properties)
++ String resolveStringValue(String)
+}
+interface com.csg.springframework.aop.BeforeAdvice {
+}
+interface com.csg.springframework.beans.factory.config.AutoWireCapableBeanFactory {
+}
+interface com.csg.springframework.context.ConfigurableApplicationContext {
+~ void refresh()
+~ void registerShutdownHook()
+~ void close()
+}
+interface com.csg.springframework.beans.factory.BeanNameAware {
+~ void setBeanName(String)
+}
+interface com.csg.springframework.util.StringValueResolver {
+~ String resolveStringValue(String)
+}
+class com.csg.springframework.beans.factory.xml.XmlBeanDefinitionReader {
++ <<Create>> XmlBeanDefinitionReader(BeanDefinitionRegistry)
++ <<Create>> XmlBeanDefinitionReader(BeanDefinitionRegistry,ResourceLoader)
++ void loadBeanDefinition(Resource)
++ void loadBeanDefinition(Resource)
++ void loadBeanDefinition(String)
+# void doLoadBeanDefinition(InputStream)
+- void scanPackage(String)
++ void loadBeanDefinitions(String[])
+}
+interface com.csg.springframework.beans.factory.DisableBean {
+~ void destroy()
+}
+abstract class com.csg.springframework.context.support.AbstractXmlApplicationContext {
+# void loadBeanDefinitions(DefaultListableBeanFactory)
+# {abstract}String[] getConfigLocations()
+}
+interface com.csg.springframework.beans.factory.ObjectFactory {
+~ T getObject()
+}
+class com.csg.springframework.core.io.ClassPathResource {
+- String path
+- ClassLoader classLoader
++ <<Create>> ClassPathResource(String)
++ <<Create>> ClassPathResource(String,ClassLoader)
++ InputStream getInputStream()
+}
+interface com.csg.springframework.beans.factory.InitializingBean {
+~ void afterPropertiesSet()
+}
+abstract class com.csg.springframework.context.support.AbstractApplicationContext {
++ {static} String APPLICATION_EVENT_MULTICASTER_BEAN_NAME
+- ApplicationEventMulticaster applicationEventMulticaster
++ void refresh()
+- void initApplicationEventMulticaster()
+- void registerListeners()
+- void finishRefresh()
++ void publishEvent(ApplicationEvent)
+# {abstract}void refreshBeanFactory()
+# {abstract}ConfigurableListableBeanFactory getBeanFactory()
+- void invokeBeanFactoryProcessors(ConfigurableListableBeanFactory)
+- void registerBeanPostProcessors(ConfigurableListableBeanFactory)
+# void finishBeanFactoryInitialization(ConfigurableListableBeanFactory)
++ void registerShutdownHook()
++ void close()
++ boolean containsBean(String)
++ Map<String,T> getBeansOfType(Class<T>)
++ String[] getBeanDefinitionNames()
++ Object getBean(String)
++ Object getBean(String,Object)
++ T getBean(String,Class<T>)
++ T getBean(Class<T>)
+}
+interface com.csg.springframework.aop.MethodBeforeAdvice {
+~ void before(Method,Object[],Object)
+}
+interface com.csg.springframework.beans.factory.BeanFactory {
+~ Object getBean(String)
+~ Object getBean(String,Object)
+~ T getBean(String,Class<T>)
+~ T getBean(Class<T>)
+~ boolean containsBean(String)
+}
+class com.csg.springframework.core.io.UrlResource {
+- URL url
++ <<Create>> UrlResource(URL)
++ InputStream getInputStream()
+}
+class com.csg.springframework.beans.factory.surpport.SimpleInstantiationStrategy {
++ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+interface com.csg.springframework.aop.AfterAdvice {
+}
+class com.csg.springframework.aop.framework.JdkDynamicAopProxy {
+- AdvisedSupport advised
++ <<Create>> JdkDynamicAopProxy(AdvisedSupport)
++ Object getProxy()
++ Object invoke(Object,Method,Object[])
+}
+class com.csg.springframework.beans.factory.surpport.DefaultListableBeanFactory {
+~ Map<String,BeanDefinition> beanDefinitionMap
++ void registerBeanDefinition(String,BeanDefinition)
++ BeanDefinition getBeanDefinition(String)
++ void preInstantiateSingletons()
++ Map<String,T> getBeansOfType(Class<T>)
++ String[] getBeanDefinitionNames()
++ boolean containsBeanDefinition(String)
++ T getBean(Class<T>)
+}
+interface com.csg.springframework.core.io.ResourceLoader {
+~ String CLASSPATH_URL_PREFIX
+~ Resource getResource(String)
+}
+abstract class com.csg.springframework.beans.factory.surpport.AbstractAutoWireCapableBeanFactory {
+- InstantiationStrategy instantiationStrategy
+- InstantiationStrategy jdkInstantiationStrategy
+# Object createBean(String,BeanDefinition,Object[])
+# Object doCreateBean(String,BeanDefinition,Object[])
+# Object getEarlyBeanReference(String,BeanDefinition,Object)
+- boolean applyBeanPostProcessorsAfterInstantiation(String,Object)
+- void applyBeanPostProcessorsBeforeApplyingPropertyValues(String,Object,BeanDefinition)
+# Object resolveBeforeInstantiation(String,BeanDefinition)
+# Object applyBeanPostProcessorsBeforeInstantiation(Class<?>,String)
+- void registerDisposableBeanIfNecessary(Object,String,BeanDefinition)
+- Object initializeBean(String,Object,BeanDefinition)
+- Object applyBeanPostProcessorsBeforeInitialization(Object,String)
+- Object applyBeanPostProcessorsAfterInitialization(Object,String)
+- void invokeInitMethods(String,Object,BeanDefinition)
+# Object createBeanInstance(String,BeanDefinition,Object[])
+- void applyPropertyValues(String,Object,BeanDefinition)
++ InstantiationStrategy getInstantiationStrategy()
++ void setInstantiationStrategy(InstantiationStrategy)
++ InstantiationStrategy getJdkInstantiationStrategy()
++ void setJdkInstantiationStrategy(InstantiationStrategy)
+}
+class com.csg.springframework.ProxyFactory {
+- AdvisedSupport advised
++ <<Create>> ProxyFactory(AdvisedSupport)
++ Object getProxy()
+- AopProxy createAopProxy()
+}
+interface com.csg.springframework.core.convert.ConversionService {
+~ boolean canConvert(Class<?>,Class<?>)
+~ T convert(Object,Class<?>)
+}
+abstract class com.csg.springframework.beans.factory.surpport.AbstractBeanFactory {
+- List<BeanPostProcessor> beanPostProcessors
+- ClassLoader beanClassLoader
+- List<StringValueResolver> embeddedValueResolvers
+- ConversionService conversionService
++ Object getBean(String)
++ T getBean(String,Class<T>)
++ Object getBean(String,Object)
+# T doGetBean(String,Object[])
+- Object getObjectForBeanInstance(Object,String)
+# {abstract}Object createBean(String,BeanDefinition,Object[])
+# {abstract}BeanDefinition getBeanDefinition(String)
++ List<BeanPostProcessor> getBeanPostProcessors()
++ void addBeanPostProcessor(BeanPostProcessor)
++ void addEmbeddedValueResolver(StringValueResolver)
++ boolean containsBean(String)
++ String resolveEmbeddedValue(String)
+# {abstract}boolean containsBeanDefinition(String)
++ ConversionService getConversionService()
++ void setConversionService(ConversionService)
++ ClassLoader getBeanClassLoader()
+}
+class com.csg.springframework.core.convert.support.GenericConversionService {
+- Map<GenericConverter.ConvertiblePair,GenericConverter> converters
++ boolean canConvert(Class<?>,Class<?>)
++ T convert(Object,Class<?>)
++ void addConverter(Converter<?,?>)
+- GenericConverter.ConvertiblePair getRequiredTypeInfo(Object)
++ void addConverter(GenericConverter)
++ void addConverterFactory(ConverterFactory<?,?>)
+# GenericConverter getConverter(Class<?>,Class<?>)
+- List<Class<?>> getClassHierarchy(Class<?>)
+}
+class com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter {
+- ConvertiblePair typeInfo
+- Converter<Object,Object> converter
++ <<Create>> ConverterAdapter(GenericConverter.ConvertiblePair,Converter<?,?>)
++ Set<ConvertiblePair> getConvertibleTypes()
++ Object convert(Object,Class<?>,Class<?>)
+}
+class com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter {
+- ConvertiblePair typeInfo
+- ConverterFactory<Object,Object> converterFactory
++ <<Create>> ConverterFactoryAdapter(ConvertiblePair,ConverterFactory<?,?>)
++ Set<ConvertiblePair> getConvertibleTypes()
++ Object convert(Object,Class<?>,Class<?>)
+}
+interface com.csg.springframework.aop.Pointcut {
+~ ClassFilter getClassFilter()
+~ MethodMatcher getMethodMatcher()
+}
+class com.csg.springframework.context.event.ContextClosedEvent {
++ <<Create>> ContextClosedEvent(Object)
+}
+class com.csg.springframework.context.event.ContextRefreshedEvent {
++ <<Create>> ContextRefreshedEvent(Object)
+}
+class com.csg.springframework.context.annotation.ClassPathScanningCandidateComponentProvider {
++ Set<BeanDefinition> findCandidateComponents(String)
+}
+class com.csg.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor {
+- ConfigurableListableBeanFactory beanFactory
++ void setBeanFactory(BeanFactory)
++ PropertyValues postProcessPropertyValues(PropertyValues,Object,String)
++ boolean postProcessAfterInstantiation(Object,String)
++ Object postProcessBeforeInitialization(Object,String)
++ Object postProcessAfterInitialization(Object,String)
++ Object postProcessBeforeInstantiation(Class<?>,String)
+}
+abstract class com.csg.springframework.beans.factory.surpport.AbstractBeanDefinitionReader {
+- BeanDefinitionRegistry registry
+- ResourceLoader resourceLoader
++ <<Create>> AbstractBeanDefinitionReader(BeanDefinitionRegistry)
++ <<Create>> AbstractBeanDefinitionReader(BeanDefinitionRegistry,ResourceLoader)
++ ResourceLoader getResourceLoader()
++ BeanDefinitionRegistry getRegistry()
+}
+class com.csg.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor {
+- AspectJExpressionPointcut pointcut
+- Advice beforeAdvice
+- Advice afterAdvice
+- String expression
++ Advice getAdvice()
++ Pointcut getPointcut()
++ void setPointcut(AspectJExpressionPointcut)
++ void setExpression(String)
+}
+class com.csg.springframework.beans.factory.surpport.CglibSubclassingInstantiationStrategy {
++ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+interface com.csg.springframework.beans.factory.surpport.BeanDefinitionReader {
+~ BeanDefinitionRegistry getRegistry()
+~ ResourceLoader getResourceLoader()
+~ void loadBeanDefinition(Resource)
+~ void loadBeanDefinition(Resource)
+~ void loadBeanDefinition(String)
+}
+class com.csg.springframework.core.convert.support.DefaultConversionService {
++ <<Create>> DefaultConversionService()
++ {static} void addDefaultConverters(ConverterRegistry)
+}
+class com.csg.springframework.aop.framework.ReflectiveMethodInvocation {
+# Object target
+# Method method
+# Object[] args
++ <<Create>> ReflectiveMethodInvocation(Object,Method,Object[])
++ Method getMethod()
++ Object[] getArguments()
++ Object proceed()
++ Object getThis()
++ AccessibleObject getStaticPart()
+}
+
+
+com.csg.springframework.beans.factory.ListableBeanFactory <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.beans.factory.HierarchicalBeanFactory <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.core.io.ResourceLoader <|-- com.csg.springframework.context.ApplicationContext
+com.csg.springframework.context.ApplicationEventPublisher <|-- com.csg.springframework.context.ApplicationContext
+java.util.EventListener <|-- com.csg.springframework.context.ApplicationListener
+com.csg.springframework.aop.Pointcut <|.. com.csg.springframework.aop.aspectj.AspectJExpressionPointcut
+com.csg.springframework.aop.MethodMatcher <|.. com.csg.springframework.aop.aspectj.AspectJExpressionPointcut
+com.csg.springframework.aop.ClassFilter <|.. com.csg.springframework.aop.aspectj.AspectJExpressionPointcut
+com.csg.springframework.beans.factory.Aware <|-- com.csg.springframework.beans.factory.BeanClassLoaderAware
+com.csg.springframework.beans.factory.ListableBeanFactory <|-- com.csg.springframework.beans.factory.ConfigurableListableBeanFactory
+com.csg.springframework.beans.factory.config.AutoWireCapableBeanFactory <|-- com.csg.springframework.beans.factory.ConfigurableListableBeanFactory
+com.csg.springframework.beans.factory.config.ConfigurableBeanFactory <|-- com.csg.springframework.beans.factory.ConfigurableListableBeanFactory
+com.csg.springframework.beans.factory.BeanFactory <|-- com.csg.springframework.beans.factory.ListableBeanFactory
+com.csg.springframework.beans.factory.config.BeanPostProcessor <|.. com.csg.springframework.context.support.ApplicationContextAwareProcessor
+com.csg.springframework.context.support.AbstractXmlApplicationContext <|-- com.csg.springframework.context.support.FilePathXmlApplicationContext
+com.csg.springframework.context.support.AbstractXmlApplicationContext <|-- com.csg.springframework.context.support.ClassPathXmlApplicationContext
+com.csg.springframework.context.annotation.ClassPathScanningCandidateComponentProvider <|-- com.csg.springframework.context.annotation.ClassPathBeanDefinitionScanner
+com.csg.springframework.beans.factory.config.BeanPostProcessor <|-- com.csg.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor
+com.csg.springframework.beans.factory.Aware <|-- com.csg.springframework.beans.factory.BeanFactoryAware
+com.csg.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor <|.. com.csg.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator
+com.csg.springframework.beans.factory.BeanFactoryAware <|.. com.csg.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator
+com.csg.springframework.core.io.Resource <|.. com.csg.springframework.core.io.FileSystemResource
+com.csg.springframework.context.event.AbstractApplicationEventMulticaster <|-- com.csg.springframework.context.event.SimpleApplicationEventMulticaster
+com.csg.springframework.core.convert.converter.GenericConverter +.. com.csg.springframework.core.convert.converter.GenericConverter.ConvertiblePair
+com.csg.springframework.aop.AfterAdvice <|-- com.csg.springframework.aop.AfterReturningAdvice
+com.csg.springframework.beans.factory.FactoryBean <|.. com.csg.springframework.context.support.ConversionServiceFactoryBean
+com.csg.springframework.beans.factory.InitializingBean <|.. com.csg.springframework.context.support.ConversionServiceFactoryBean
+com.csg.springframework.beans.factory.surpport.DefaultSingletonBeanRegistry <|-- com.csg.springframework.beans.factory.surpport.FactoryBeanRegistrySupport
+com.csg.springframework.context.support.AbstractApplicationContext <|-- com.csg.springframework.context.support.AbstractRefreshableApplicationContext
+com.csg.springframework.beans.factory.config.SingletonBeanRegistry <|.. com.csg.springframework.beans.factory.surpport.DefaultSingletonBeanRegistry
+com.csg.springframework.beans.factory.Aware <|-- com.csg.springframework.beans.factory.ApplicationContextAware
+com.csg.springframework.core.convert.converter.ConverterFactory <|.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory
+com.csg.springframework.core.convert.support.StringToNumberConverterFactory +.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber
+com.csg.springframework.core.convert.support.Converter <|.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber
+org.aopalliance.intercept.MethodInterceptor <|.. com.csg.springframework.aop.framework.adapter.MethodAfterAdviceInterceptor
+com.csg.springframework.aop.framework.AopProxy <|.. com.csg.springframework.aop.framework.Cglib2AopProxy
+com.csg.springframework.aop.framework.Cglib2AopProxy +.. com.csg.springframework.aop.framework.Cglib2AopProxy.DynamicAdvisedInterceptor
+com.csg.springframework.aop.framework.MethodInterceptor <|.. com.csg.springframework.aop.framework.Cglib2AopProxy.DynamicAdvisedInterceptor
+com.csg.springframework.aop.framework.Cglib2AopProxy +.. com.csg.springframework.aop.framework.Cglib2AopProxy.CglibMethodInvocation
+com.csg.springframework.aop.framework.ReflectiveMethodInvocation <|-- com.csg.springframework.aop.framework.Cglib2AopProxy.CglibMethodInvocation
+org.aopalliance.intercept.MethodInterceptor <|.. com.csg.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor
+com.csg.springframework.aop.Advisor <|-- com.csg.springframework.aop.PointcutAdvisor
+com.csg.springframework.context.event.ApplicationEventMulticaster <|.. com.csg.springframework.context.event.AbstractApplicationEventMulticaster
+com.csg.springframework.beans.factory.BeanFactoryAware <|.. com.csg.springframework.context.event.AbstractApplicationEventMulticaster
+com.csg.springframework.beans.factory.HierarchicalBeanFactory <|-- com.csg.springframework.beans.factory.config.ConfigurableBeanFactory
+com.csg.springframework.beans.factory.config.SingletonBeanRegistry <|-- com.csg.springframework.beans.factory.config.ConfigurableBeanFactory
+com.csg.springframework.context.ApplicationEvent <|-- com.csg.springframework.context.event.ApplicationContextEvent
+java.util.EventObject <|-- com.csg.springframework.context.ApplicationEvent
+com.csg.springframework.core.io.ResourceLoader <|.. com.csg.springframework.core.io.DefaultResourceLoader
+com.csg.springframework.beans.factory.DisableBean <|.. com.csg.springframework.beans.factory.surpport.DisposableBeanAdapter
+com.csg.springframework.beans.factory.BeanFactory <|-- com.csg.springframework.beans.factory.HierarchicalBeanFactory
+com.csg.springframework.beans.factory.config.BeanFactoryPostProcessor <|.. com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer
+com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer +.. com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer.PlaceholderResolvingStringValueResolver
+com.csg.springframework.beans.factory.StringValueResolver <|.. com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer.PlaceholderResolvingStringValueResolver
+org.aopalliance.aop.Advice <|-- com.csg.springframework.aop.BeforeAdvice
+com.csg.springframework.beans.factory.BeanFactory <|-- com.csg.springframework.beans.factory.config.AutoWireCapableBeanFactory
+com.csg.springframework.context.ApplicationContext <|-- com.csg.springframework.context.ConfigurableApplicationContext
+com.csg.springframework.beans.factory.Aware <|-- com.csg.springframework.beans.factory.BeanNameAware
+com.csg.springframework.beans.factory.surpport.AbstractBeanDefinitionReader <|-- com.csg.springframework.beans.factory.xml.XmlBeanDefinitionReader
+com.csg.springframework.context.support.AbstractRefreshableApplicationContext <|-- com.csg.springframework.context.support.AbstractXmlApplicationContext
+com.csg.springframework.core.io.Resource <|.. com.csg.springframework.core.io.ClassPathResource
+com.csg.springframework.context.ConfigurableApplicationContext <|.. com.csg.springframework.context.support.AbstractApplicationContext
+com.csg.springframework.core.io.DefaultResourceLoader <|-- com.csg.springframework.context.support.AbstractApplicationContext
+com.csg.springframework.aop.BeforeAdvice <|-- com.csg.springframework.aop.MethodBeforeAdvice
+com.csg.springframework.core.io.Resource <|.. com.csg.springframework.core.io.UrlResource
+com.csg.springframework.beans.factory.surpport.InstantiationStrategy <|.. com.csg.springframework.beans.factory.surpport.SimpleInstantiationStrategy
+org.aopalliance.aop.Advice <|-- com.csg.springframework.aop.AfterAdvice
+com.csg.springframework.aop.framework.AopProxy <|.. com.csg.springframework.aop.framework.JdkDynamicAopProxy
+java.lang.reflect.InvocationHandler <|.. com.csg.springframework.aop.framework.JdkDynamicAopProxy
+com.csg.springframework.beans.factory.surpport.BeanDefinitionRegistry <|.. com.csg.springframework.beans.factory.surpport.DefaultListableBeanFactory
+com.csg.springframework.beans.factory.ConfigurableListableBeanFactory <|.. com.csg.springframework.beans.factory.surpport.DefaultListableBeanFactory
+com.csg.springframework.beans.factory.surpport.AbstractAutoWireCapableBeanFactory <|-- com.csg.springframework.beans.factory.surpport.DefaultListableBeanFactory
+com.csg.springframework.beans.factory.surpport.AbstractBeanFactory <|-- com.csg.springframework.beans.factory.surpport.AbstractAutoWireCapableBeanFactory
+com.csg.springframework.beans.factory.config.ConfigurableBeanFactory <|.. com.csg.springframework.beans.factory.surpport.AbstractBeanFactory
+com.csg.springframework.beans.factory.surpport.FactoryBeanRegistrySupport <|-- com.csg.springframework.beans.factory.surpport.AbstractBeanFactory
+com.csg.springframework.core.convert.ConversionService <|.. com.csg.springframework.core.convert.support.GenericConversionService
+com.csg.springframework.core.convert.converter.ConverterRegistry <|.. com.csg.springframework.core.convert.support.GenericConversionService
+com.csg.springframework.core.convert.support.GenericConversionService +.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter
+com.csg.springframework.core.convert.support.GenericConverter <|.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter
+com.csg.springframework.core.convert.support.GenericConversionService +.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter
+com.csg.springframework.core.convert.support.GenericConverter <|.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter
+com.csg.springframework.context.event.ApplicationContextEvent <|-- com.csg.springframework.context.event.ContextClosedEvent
+com.csg.springframework.context.event.ApplicationContextEvent <|-- com.csg.springframework.context.event.ContextRefreshedEvent
+com.csg.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor <|.. com.csg.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+com.csg.springframework.beans.factory.BeanFactoryAware <|.. com.csg.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+com.csg.springframework.beans.factory.surpport.BeanDefinitionReader <|.. com.csg.springframework.beans.factory.surpport.AbstractBeanDefinitionReader
+com.csg.springframework.aop.PointcutAdvisor <|.. com.csg.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor
+com.csg.springframework.beans.factory.surpport.InstantiationStrategy <|.. com.csg.springframework.beans.factory.surpport.CglibSubclassingInstantiationStrategy
+com.csg.springframework.core.convert.support.GenericConversionService <|-- com.csg.springframework.core.convert.support.DefaultConversionService
+org.aopalliance.intercept.MethodInvocation <|.. com.csg.springframework.aop.framework.ReflectiveMethodInvocation
+@enduml

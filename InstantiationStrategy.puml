@@ -1,0 +1,15 @@
+@startuml
+class com.csg.springframework.beans.factory.surpport.SimpleInstantiationStrategy {
++ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+interface com.csg.springframework.beans.factory.surpport.InstantiationStrategy {
+~ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+class com.csg.springframework.beans.factory.surpport.CglibSubclassingInstantiationStrategy {
++ Object instantiate(BeanDefinition,String,Constructor,Object[])
+}
+
+
+com.csg.springframework.beans.factory.surpport.InstantiationStrategy <|.. com.csg.springframework.beans.factory.surpport.SimpleInstantiationStrategy
+com.csg.springframework.beans.factory.surpport.InstantiationStrategy <|.. com.csg.springframework.beans.factory.surpport.CglibSubclassingInstantiationStrategy
+@enduml

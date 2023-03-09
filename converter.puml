@@ -1,0 +1,75 @@
+@startuml
+interface com.csg.springframework.core.convert.ConversionService {
+~ boolean canConvert(Class<?>,Class<?>)
+~ T convert(Object,Class<?>)
+}
+class com.csg.springframework.core.convert.support.GenericConversionService {
+- Map<GenericConverter.ConvertiblePair,GenericConverter> converters
++ boolean canConvert(Class<?>,Class<?>)
++ T convert(Object,Class<?>)
++ void addConverter(Converter<?,?>)
+- GenericConverter.ConvertiblePair getRequiredTypeInfo(Object)
++ void addConverter(GenericConverter)
++ void addConverterFactory(ConverterFactory<?,?>)
+# GenericConverter getConverter(Class<?>,Class<?>)
+- List<Class<?>> getClassHierarchy(Class<?>)
+}
+class com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter {
+- ConvertiblePair typeInfo
+- Converter<Object,Object> converter
++ Set<ConvertiblePair> getConvertibleTypes()
++ Object convert(Object,Class<?>,Class<?>)
+}
+class com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter {
+- ConvertiblePair typeInfo
+- ConverterFactory<Object,Object> converterFactory
++ Set<ConvertiblePair> getConvertibleTypes()
++ Object convert(Object,Class<?>,Class<?>)
+}
+interface com.csg.springframework.core.convert.converter.Converter {
+~ T convert(S)
+}
+interface com.csg.springframework.core.convert.converter.ConverterRegistry {
+~ void addConverter(Converter<?,?>)
+~ void addConverter(GenericConverter)
+~ void addConverterFactory(ConverterFactory<?,?>)
+}
+interface com.csg.springframework.core.convert.converter.ConverterFactory {
+~ Converter<S,T> getConverter(Class<T>)
+}
+class com.csg.springframework.core.convert.support.StringToNumberConverterFactory {
++ Converter<String,T> getConverter(Class<T>)
+}
+class com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber {
+- Class<T> targetType
++ T convert(String)
+}
+interface com.csg.springframework.core.convert.converter.GenericConverter {
+~ Set<ConvertiblePair> getConvertibleTypes()
+~ Object convert(Object,Class<?>,Class<?>)
+}
+class com.csg.springframework.core.convert.converter.GenericConverter.ConvertiblePair {
+- Class<?> sourceType
+- Class<?> targetType
++ Class<?> getSourceType()
++ Class<?> getTargetType()
++ boolean equals(Object)
++ int hashCode()
+}
+class com.csg.springframework.core.convert.support.DefaultConversionService {
++ {static} void addDefaultConverters(ConverterRegistry)
+}
+
+
+com.csg.springframework.core.convert.ConversionService <|.. com.csg.springframework.core.convert.support.GenericConversionService
+com.csg.springframework.core.convert.converter.ConverterRegistry <|.. com.csg.springframework.core.convert.support.GenericConversionService
+com.csg.springframework.core.convert.support.GenericConversionService +.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter
+com.csg.springframework.core.convert.support.GenericConverter <|.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterAdapter
+com.csg.springframework.core.convert.support.GenericConversionService +.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter
+com.csg.springframework.core.convert.support.GenericConverter <|.. com.csg.springframework.core.convert.support.GenericConversionService.ConverterFactoryAdapter
+com.csg.springframework.core.convert.converter.ConverterFactory <|.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory
+com.csg.springframework.core.convert.support.StringToNumberConverterFactory +.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber
+com.csg.springframework.core.convert.support.Converter <|.. com.csg.springframework.core.convert.support.StringToNumberConverterFactory.StringToNumber
+com.csg.springframework.core.convert.converter.GenericConverter +.. com.csg.springframework.core.convert.converter.GenericConverter.ConvertiblePair
+com.csg.springframework.core.convert.support.GenericConversionService <|-- com.csg.springframework.core.convert.support.DefaultConversionService
+@enduml

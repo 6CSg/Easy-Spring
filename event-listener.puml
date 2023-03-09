@@ -1,0 +1,44 @@
+@startuml
+interface com.csg.springframework.context.event.ApplicationEventMulticaster {
+~ void addApplicationListener(ApplicationListener<?>)
+~ void removeApplicationListener(ApplicationListener<?>)
+~ void multicastEvent(ApplicationEvent)
+}
+abstract class com.csg.springframework.context.event.AbstractApplicationEventMulticaster {
++ Set<ApplicationListener<ApplicationEvent>> applicationListeners
++ BeanFactory beanFactory
++ void addApplicationListener(ApplicationListener<?>)
++ void removeApplicationListener(ApplicationListener<?>)
++ void setBeanFactory(BeanFactory)
+# Collection<ApplicationListener> getApplicationListeners(ApplicationEvent)
+- boolean supportsEvent(ApplicationListener<ApplicationEvent>,ApplicationEvent)
+}
+interface com.csg.springframework.context.ApplicationListener {
+~ void onApplicationEvent(E)
+}
+class com.csg.springframework.context.event.ApplicationContextEvent {
++ ApplicationContext getApplicationContext()
+}
+abstract class com.csg.springframework.context.ApplicationEvent {
+}
+class com.csg.springframework.context.event.ContextClosedEvent {
+}
+interface com.csg.springframework.context.ApplicationEventPublisher {
+~ void publishEvent(ApplicationEvent)
+}
+class com.csg.springframework.context.event.SimpleApplicationEventMulticaster {
++ void multicastEvent(ApplicationEvent)
+}
+class com.csg.springframework.context.event.ContextRefreshedEvent {
+}
+
+
+com.csg.springframework.context.event.ApplicationEventMulticaster <|.. com.csg.springframework.context.event.AbstractApplicationEventMulticaster
+com.csg.springframework.beans.factory.BeanFactoryAware <|.. com.csg.springframework.context.event.AbstractApplicationEventMulticaster
+java.util.EventListener <|-- com.csg.springframework.context.ApplicationListener
+com.csg.springframework.context.ApplicationEvent <|-- com.csg.springframework.context.event.ApplicationContextEvent
+java.util.EventObject <|-- com.csg.springframework.context.ApplicationEvent
+com.csg.springframework.context.event.ApplicationContextEvent <|-- com.csg.springframework.context.event.ContextClosedEvent
+com.csg.springframework.context.event.AbstractApplicationEventMulticaster <|-- com.csg.springframework.context.event.SimpleApplicationEventMulticaster
+com.csg.springframework.context.event.ApplicationContextEvent <|-- com.csg.springframework.context.event.ContextRefreshedEvent
+@enduml
