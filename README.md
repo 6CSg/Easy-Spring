@@ -107,3 +107,9 @@ public abstract class AbstractAutoWireCapableBeanFactory extends AbstractBeanFac
 ```
 # 三、整体流程：
 ![Spring全流程.png](Spring全流程.png)
+# 四、参考资料
+在手写Spring的实现中参考了tiny-spring、mini-spring、small-spring这三个项目，并在它们的基础上进行拓展，同时我还为small-spring项目中的bug修复提过pr且被作者merge。
+参考项目地址：
+https://github.com/code4craft/tiny-spring
+https://github.com/DerekYRC/mini-spring
+https://github.com/fuzhengwei/small-spring
