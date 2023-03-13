@@ -105,8 +105,14 @@ public abstract class AbstractAutoWireCapableBeanFactory extends AbstractBeanFac
     }
 }
 ```
-# 三、整体流程：
+# 三级缓存解决循环依赖：
+1，一级缓存singletonObjects：一级缓存存放的是已经初始化好的bean，即已经完成初始化好的注入对象的代理
+2. 二级缓存earlySingletonObjects：二级缓存存放的是还没有完全被初始化好的中间对象代理，即已经生成了bean但是这个bean还有部分成员对象还未被注入进来
+3. 三级缓存singletonFactory：三级缓存存放的是还未初始化完的bean，而这些bean只是早期的简单对象，并不是代理对象
+![循环依赖.png](循环依赖.png)
+# 四、整体流程：
 ![Spring全流程.png](Spring全流程.png)
+![beanLife.png](beanLife.png)
 # 四、参考资料
 在手写Spring的实现中参考了tiny-spring、mini-spring、small-spring这三个项目，并在它们的基础上进行拓展，同时我还为small-spring项目中的bug修复提过pr且被作者merge。
 参考项目地址：
