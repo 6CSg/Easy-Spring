@@ -6,7 +6,7 @@ import com.csg.springframework.stereotype.Component;
 
 import java.util.Random;
 
-//@Component("userService")
+@Component("userService")
 public class UserService implements IUserService {
     @Value("${token}")
     private String token;
@@ -14,6 +14,7 @@ public class UserService implements IUserService {
     private UserDao userDao;
 
     public String queryUserInfo() {
+        System.out.println("目标方法执行了：");
         return userDao.queryUserName("10001") + "__" + token;
     }
 

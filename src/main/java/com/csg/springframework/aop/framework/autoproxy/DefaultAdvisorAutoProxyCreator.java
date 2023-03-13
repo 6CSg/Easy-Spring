@@ -26,7 +26,7 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     private DefaultListableBeanFactory beanFactory;
     // 实例化之前的后置处理，有几个对象，该方法就被调用几次
 
-    private final Set<Object> earlyProxyReferences = Collections.synchronizedSet(new HashSet<Object>());
+    private final Set<Object> earlyProxyReferences = Collections.synchronizedSet(new HashSet<>());
 
     /**
      * 方法已迁移
@@ -49,7 +49,7 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     // 初始化之前的后置处理
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeanException {
-       return bean;
+        return bean;
     }
 
     /**
@@ -92,23 +92,31 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     protected Object wrapIfNecessary(Object bean, String beanName) {
         // 如果是Advice/Pointcut/Advisor，则不处理，否则StackOverflow，因为后面会递归调用getBeansOfType()
         // 一直爆栈，没把握好递归出口
-        if (isInfrastructureClass(bean.getClass())) return null;
+        if (isInfrastructureClass(bean.getClass())) return bean;
         // 通过注册信息中实例化并获取所有切点表达式的访问者
-        Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class).values();
+        Collection<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansOfType(AspectJExpressionPointcutAdvisor.class)
+                .values();
         // 让所有切点表达式访问者们去判断当前类是否需要创建代理对象
-        for (AspectJExpressionPointcutAdvisor advisor : advisors) {
-            ClassFilter classFilter = advisor.getPointcut().getClassFilter();
-            // 如果与当前类匹配不上，说明当前类中的方法不需要增强
-            if (!classFilter.matches(bean.getClass())) continue;
-            AdvisedSupport advisedSupport = new AdvisedSupport();
-            TargetSource targetSource = new TargetSource(bean);
-            advisedSupport.setTargetSource(targetSource);
-            advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
-            advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
-            // 设置代理模式，为啥要写死？
-            advisedSupport.setProxyTargetClass(true);
-            // 返回代理对象
-            return new ProxyFactory(advisedSupport).getProxy();
+        try {
+            ProxyFactory factory = new ProxyFactory();
+            for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+                ClassFilter classFilter = advisor.getPointcut().getClassFilter();
+                // 如果与当前类匹配不上，说明当前类中的方法不需要增强
+                if (!classFilter.matches(bean.getClass())) continue;
+//                AdvisedSupport advisedSupport = new AdvisedSupport();
+                TargetSource targetSource = new TargetSource(bean);
+//                advisedSupport.setTargetSource(targetSource);
+//                advisedSupport.setMethodInterceptor((MethodInterceptor) advisor.getAdvice());
+//                advisedSupport.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+                factory.setTargetSource(targetSource);
+                factory.addAdvisor(advisor);
+                factory.setMethodMatcher(advisor.getPointcut().getMethodMatcher());
+            }
+            if (!factory.getAdvisors().isEmpty()) {
+                return factory.getProxy();
+            }
+        } catch (Exception e) {
+            throw new BeanException("Error create proxy bean for: " + beanName, e);
         }
         return bean;
     }

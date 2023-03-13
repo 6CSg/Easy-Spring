@@ -22,8 +22,8 @@ import java.util.List;
 public abstract class AbstractAutoWireCapableBeanFactory extends AbstractBeanFactory {
 
     // 聚合策略者，根据入参类型来实例化
-    private InstantiationStrategy instantiationStrategy = new CglibSubclassingInstantiationStrategy();
-    private InstantiationStrategy jdkInstantiationStrategy = new SimpleInstantiationStrategy();
+    // todo: bug--when cglibProxy is created, aop error create proxy bean for `targetBean`
+    private InstantiationStrategy instantiationStrategy = new SimpleInstantiationStrategy();
 
     /**
      * 注意：属性填充（applyPropertyValues）时，如果ref(引用类型属性)是BeanFactory类型，那么填充的实例就不一定是Spring.xml中定义的类型的实例，
@@ -292,12 +292,5 @@ public abstract class AbstractAutoWireCapableBeanFactory extends AbstractBeanFac
         this.instantiationStrategy = instantiationStrategy;
     }
 
-    public InstantiationStrategy getJdkInstantiationStrategy() {
-        return jdkInstantiationStrategy;
-    }
-
-    public void setJdkInstantiationStrategy(InstantiationStrategy jdkInstantiationStrategy) {
-        this.jdkInstantiationStrategy = jdkInstantiationStrategy;
-    }
 
 }

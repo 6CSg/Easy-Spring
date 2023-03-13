@@ -1,5 +1,6 @@
 package com.csg.springframework.aop.framework.adapter;
 
+import com.csg.springframework.aop.AfterAdvice;
 import com.csg.springframework.aop.AfterReturningAdvice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -7,14 +8,14 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * 方法拦截器，拦截方法后执行后置通知
  */
-public class MethodAfterAdviceInterceptor implements MethodInterceptor {
+public class AfterReturningAdviceInterceptor implements MethodInterceptor, AfterAdvice {
     private AfterReturningAdvice advice;
 
-    public MethodAfterAdviceInterceptor(AfterReturningAdvice advice) {
+    public AfterReturningAdviceInterceptor(AfterReturningAdvice advice) {
         this.advice = advice;
     }
 
-    public MethodAfterAdviceInterceptor() {
+    public AfterReturningAdviceInterceptor() {
     }
 
     @Override

@@ -13,8 +13,6 @@ import com.csg.springframework.context.event.SimpleApplicationEventMulticaster;
 import com.csg.springframework.core.convert.ConversionService;
 import com.csg.springframework.core.io.DefaultResourceLoader;
 import com.csg.springframework.exception.BeanException;
-import com.sun.xml.internal.ws.api.client.WSPortInfo;
-
 import java.util.Collection;
 import java.util.Map;
 

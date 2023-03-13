@@ -10,7 +10,7 @@ import com.csg.springframework.core.convert.converter.GenericConverter;
 import com.csg.springframework.core.convert.support.DefaultConversionService;
 import com.csg.springframework.core.convert.support.GenericConversionService;
 import com.csg.springframework.exception.BeanException;
-import com.sun.istack.internal.Nullable;
+import com.sun.istack.Nullable;
 
 import java.util.Set;
 

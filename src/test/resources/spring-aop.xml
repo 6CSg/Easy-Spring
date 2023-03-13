@@ -3,8 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	         http://www.springframework.org/schema/beans/spring-beans.xsd
-		 http://www.springframework.org/schema/context">
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context">
 
     <bean class="com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer">
         <property name="location" value="classpath:token.properties"/>
@@ -12,15 +12,32 @@
 
     <bean class="com.csg.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
+    <!--前置通知-->
     <bean id="beforeAdvice" class="com.csg.springframework.test.bean.UserServiceBeforeAdvice"/>
 
-    <bean id="methodInterceptor" class="com.csg.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+    <!--后置通知-->
+    <bean id="afterAdvice" class="com.csg.springframework.test.bean.UserServiceAfterAdvice"/>
+
+    <!--包装前置通知-->
+    <bean id="methodBeforeInterceptor" class="com.csg.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
         <property name="advice" ref="beforeAdvice"/>
     </bean>
 
-    <bean id="pointcutAdvisor" class="com.csg.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+    <!--包装后置通知-->
+    <bean id="methodAfterInterceptor" class="com.csg.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor">
+        <property name="advice" ref="afterAdvice"/>
+    </bean>
+
+    <!--前置通知切面-->
+    <bean id="pointcutAdvisor1" class="com.csg.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
         <property name="expression" value="execution(* com.csg.springframework.test.bean.IUserService.*(..))"/>
-        <property name="beforeAdvice" ref="methodInterceptor"/>
+        <property name="advice" ref="methodBeforeInterceptor"/>
+    </bean>
+
+    <!--后置通知切面-->
+    <bean id="pointcutAdvisor2" class="com.csg.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* com.csg.springframework.test.bean.IUserService.*(..))"/>
+        <property name="advice" ref="methodAfterInterceptor"/>
     </bean>
 
     <context:component-scan base-package="com.csg.springframework.test.bean"/>

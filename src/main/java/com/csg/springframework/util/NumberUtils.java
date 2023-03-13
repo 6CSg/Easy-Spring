@@ -1,7 +1,7 @@
 package com.csg.springframework.util;
 
 import cn.hutool.core.lang.Assert;
-import com.sun.istack.internal.Nullable;
+import com.sun.istack.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

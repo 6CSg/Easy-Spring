@@ -6,7 +6,7 @@ import com.csg.springframework.beans.factory.PropertyPlaceholderConfigurer;
 import com.csg.springframework.core.convert.ConversionService;
 import com.csg.springframework.exception.BeanException;
 import com.csg.springframework.util.StringValueResolver;
-import com.sun.istack.internal.Nullable;
+import com.sun.istack.Nullable;
 
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
     String SCOPE_SINGLETON = "singleton";

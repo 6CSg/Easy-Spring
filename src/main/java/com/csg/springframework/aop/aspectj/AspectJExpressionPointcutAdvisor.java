@@ -1,7 +1,5 @@
 package com.csg.springframework.aop.aspectj;
 
-import com.csg.springframework.aop.AfterAdvice;
-import com.csg.springframework.aop.BeforeAdvice;
 import com.csg.springframework.aop.Pointcut;
 import com.csg.springframework.aop.PointcutAdvisor;
 import org.aopalliance.aop.Advice;
@@ -12,12 +10,10 @@ import org.aopalliance.aop.Advice;
 public class AspectJExpressionPointcutAdvisor implements PointcutAdvisor {
     // 切点
     private AspectJExpressionPointcut pointcut;
-    // 前置通知，当设置属性时，其实是MethodBeforeInterceptor，并非用户实现MethodBeforeAdvice
-    // 用户的实现类已经被包装进MethodBeforeInterceptor
-    private Advice beforeAdvice;
 
-    // 后置通知
-    private Advice afterAdvice;
+    // 通知对象，当设置属性时，其实是MethodBeforeInterceptor，并非用户实现MethodBeforeAdvice
+    // 用户的实现类已经被包装进MethodBeforeInterceptor
+    private Advice advice;
 
     // 表达式
     private String expression;
@@ -25,7 +21,11 @@ public class AspectJExpressionPointcutAdvisor implements PointcutAdvisor {
 
     @Override
     public Advice getAdvice() {
-        return this.beforeAdvice;
+        return this.advice;
+    }
+
+    public void setAdvice(Advice advice) {
+        this.advice = advice;
     }
 
     @Override

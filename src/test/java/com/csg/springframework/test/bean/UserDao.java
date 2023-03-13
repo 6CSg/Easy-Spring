@@ -5,7 +5,7 @@ import com.csg.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Component("userDao")
+@Component("userDao")
 public class UserDao {
     private static Map<String, String> hashMap = new HashMap<>();
 
