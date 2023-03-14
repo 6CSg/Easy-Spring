@@ -1,5 +1,6 @@
 package com.csg.springframework.aop.framework.adapter;
 
+import com.csg.springframework.aop.BeforeAdvice;
 import com.csg.springframework.aop.MethodBeforeAdvice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -7,7 +8,7 @@ import org.aopalliance.intercept.MethodInvocation;
 /**
  * 方法前置拦截器，封装了前置通知
  */
-public class MethodBeforeAdviceInterceptor implements MethodInterceptor {
+public class MethodBeforeAdviceInterceptor implements MethodInterceptor, BeforeAdvice {
 
     private MethodBeforeAdvice advice;
 

@@ -111,8 +111,12 @@ public abstract class AbstractAutoWireCapableBeanFactory extends AbstractBeanFac
 3. 三级缓存singletonFactory：三级缓存存放的是还未初始化完的bean，而这些bean只是早期的简单对象，并不是代理对象
 ![循环依赖.png](循环依赖.png)
 # 四、整体流程：
+
+Xml/类文件扫描 -> BeanDefinition -> Bean实例化 -> BeanDefinition中属性信息修改 -> 属性赋值 -> 初始化`(执行初始化方法、前后置处理) `-> Bean的使用 -> Bean的销毁`(实现了DisabledBean接口)`
+
 ![Spring全流程.png](Spring全流程.png)
 ![beanLife.png](beanLife.png)
+
 # 四、参考资料
 在手写Spring的实现中参考了tiny-spring、mini-spring、small-spring这三个项目，并在它们的基础上进行拓展，同时我还为small-spring项目中的bug修复提过pr且被作者merge。
 参考项目地址：
