@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
+
     public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 
     private ApplicationEventMulticaster applicationEventMulticaster;
@@ -68,6 +69,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     private void finishRefresh() {
         publishEvent(new ContextRefreshedEvent(this));
     }
+
     @Override
     public void publishEvent(ApplicationEvent event) {
         applicationEventMulticaster.multicastEvent(event);

@@ -12,6 +12,7 @@ import com.csg.springframework.util.ClassUtils;
 import java.lang.reflect.Field;
 
 public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareBeanPostProcessor, BeanFactoryAware {
+
     private ConfigurableListableBeanFactory beanFactory;
 
     @Override

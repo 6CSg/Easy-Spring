@@ -6,9 +6,12 @@ import com.csg.springframework.context.ApplicationContext;
 import com.csg.springframework.exception.BeanException;
 
 /**
- * 由于ApplicationContext的获取并不能在创建bean时直接拿到，所以需要在 refresh 操作时，把 ApplicationContext 写入到一个包装的 BeanPostProcessor 中去，在applyBeanPostProcessorsBeforeInitialization()调用
+ * 由于ApplicationContext的获取并不能在创建bean时直接拿到，所以需要在 refresh 操作时，
+ * 把 ApplicationContext 写入到一个包装的 BeanPostProcessor 中去，
+ * 在applyBeanPostProcessorsBeforeInitialization()调用
  */
 public class ApplicationContextAwareProcessor implements BeanPostProcessor {
+
     private final ApplicationContext applicationContext;
 
     public ApplicationContextAwareProcessor(ApplicationContext applicationContext) {

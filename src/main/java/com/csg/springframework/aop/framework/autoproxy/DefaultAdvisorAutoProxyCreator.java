@@ -23,6 +23,7 @@ import java.util.Set;
  * 创建者：实现代理对象自动功能，本质上是一个后置处理器BeanPostProcessor，同时可以被感知
  */
 public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPostProcessor, BeanFactoryAware {
+
     private DefaultListableBeanFactory beanFactory;
     // 实例化之前的后置处理，有几个对象，该方法就被调用几次
 

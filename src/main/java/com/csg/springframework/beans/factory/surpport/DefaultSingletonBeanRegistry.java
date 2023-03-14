@@ -104,6 +104,8 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         for (Object beanName : disableBeanName) {
             // System.out.println("--"+beanName);
             DisableBean disableBean = disableBeansMap.remove(beanName);
+            // 从singletonBeanMap中移除
+            // singletonBeansMap.remove(beanName);
             if (null == disableBean) {
                 throw new BeanException("you couldn't invoke registerShutdownHook method twice");
             }

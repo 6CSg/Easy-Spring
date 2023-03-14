@@ -14,7 +14,8 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-public abstract class AbstractApplicationEventMulticaster implements ApplicationEventMulticaster, BeanFactoryAware {
+    public abstract class AbstractApplicationEventMulticaster implements ApplicationEventMulticaster, BeanFactoryAware {
+
     // 用LinkedHashSet的原因
     public final Set<ApplicationListener<ApplicationEvent>> applicationListeners = new LinkedHashSet<>();
 
@@ -77,6 +78,5 @@ public abstract class AbstractApplicationEventMulticaster implements Application
         // 如果A.isAssignableFrom(B)结果是true，证明B可以转换成为A
         // 如果event的class和ApplicationListener<T>中的T的class有关联关系，说明二者匹配上了
         return eventClass.isAssignableFrom(event.getClass());
-
     }
 }

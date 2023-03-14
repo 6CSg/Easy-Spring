@@ -8,19 +8,29 @@ import com.csg.springframework.beans.PropertyValues;
 public class BeanDefinition {
     // 单例Bean的标记
     String SCOPE_SINGLETON = ConfigurableBeanFactory.SCOPE_SINGLETON;
+
     // 默认为singleton
     private boolean singleton = true;
+
     // 原型Bean的标记
     String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
+
     private boolean prototype = false;
+
     // 默认为单例
     private String scope = SCOPE_SINGLETON;
+
     // 定义Bean的类型信息
     private Class beanClass;
+
     // 定义Bean的属性信息
     private PropertyValues propertyValues;
+
     // Bean初始化方法名
     private String initMethodName;
+
+    // Bean的销毁方法名
+    private String destroyMethodName;
 
     public String getInitMethodName() {
         return initMethodName;
@@ -38,8 +48,7 @@ public class BeanDefinition {
         this.destroyMethodName = destroyMethodName;
     }
 
-    // Bean的销毁方法名
-    private String destroyMethodName;
+
 
     public boolean isSingleton() {
         return singleton;
