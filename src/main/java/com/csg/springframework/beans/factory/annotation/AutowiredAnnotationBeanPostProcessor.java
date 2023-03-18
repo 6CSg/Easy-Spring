@@ -1,6 +1,7 @@
 package com.csg.springframework.beans.factory.annotation;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.csg.springframework.beans.PropertyValues;
 import com.csg.springframework.beans.factory.BeanFactory;
 import com.csg.springframework.beans.factory.BeanFactoryAware;
@@ -42,12 +43,25 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
         }
         // 处理Autowired
         for (Field field : fields) {
-            Autowired autowiredAnnotation = field.getAnnotation(Autowired.class);
-            if (null != autowiredAnnotation) {
-                Class<?> fieldType = field.getType();
+            Class<?> fieldType = field.getType();
+            Object dependentBean = null;
+            if (field.isAnnotationPresent(Resource.class) && field.isAnnotationPresent(Autowired.class)) {
+                throw new BeanException("Resource & Autowired can't be used on a field at one time！");
+            } else if (field.isAnnotationPresent(Resource.class)) {
+                Resource resourceAnnotation = field.getAnnotation(Resource.class);
+                // 默认为字段名
+                String dependentBeanName = field.getName();
+                if (StrUtil.isNotEmpty(resourceAnnotation.name())) {
+                    // 根据用户定义的名称获取
+                    dependentBeanName = resourceAnnotation.name();
+                }
+                // 给bean赋值
+                dependentBean = beanFactory.getBean(dependentBeanName);
+                // 设置属性
+                BeanUtil.setFieldValue(bean, field.getName(), dependentBean);
+            } else if (field.isAnnotationPresent(Autowired.class)) {
                 String dependentBeanName = null;
                 Qualifier qualifierAnnotation = field.getAnnotation(Qualifier.class);
-                Object dependentBean = null;
                 if (null != qualifierAnnotation) {
                     dependentBeanName = qualifierAnnotation.value();
                     // 获取依赖的对象实例
